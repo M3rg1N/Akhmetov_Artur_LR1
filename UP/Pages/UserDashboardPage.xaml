@@ -1,0 +1,200 @@
+<Page x:Class="BanID.Pages.UserDashboardPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Background="Transparent">
+    <Page.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+        <Style TargetType="TextBox">
+            <Setter Property="Padding" Value="10,0,10,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="Padding" Value="8,0,8,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <DataTemplate x:Key="AccountTemplate">
+            <Border Background="White" CornerRadius="6" Padding="20" Margin="0,0,0,15">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="26"/>
+                        <ColumnDefinition Width="170"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Number}" FontWeight="Bold" FontSize="16" Foreground="#21312D" TextWrapping="Wrap"/>
+                        <TextBlock Text="{Binding DisplayText}" Margin="0,10,0,0" Foreground="#46544F" TextWrapping="Wrap" LineHeight="20"/>
+                    </StackPanel>
+                    <Button Grid.Column="2"
+                            Content="{Binding CloseButtonText}"
+                            Tag="{Binding ID_Account}"
+                            Height="36"
+                            Background="{Binding CloseButtonColor}"
+                            Foreground="{Binding CloseButtonTextColor}"
+                            IsHitTestVisible="{Binding CanSendCloseRequest}"
+                            Click="CloseAccount_Click"/>
+                </Grid>
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="DepositTemplate">
+            <Border Background="White" CornerRadius="6" Padding="20" Margin="0,0,0,15">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="26"/>
+                        <ColumnDefinition Width="145"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Title}" FontWeight="Bold" FontSize="16" Foreground="#21312D" TextWrapping="Wrap"/>
+                        <TextBlock Text="{Binding Description}" Margin="0,10,0,0" TextWrapping="Wrap" Foreground="#46544F" LineHeight="20"/>
+                    </StackPanel>
+                    <Button Grid.Column="2"
+                            Content="{Binding CloseButtonText}"
+                            Tag="{Binding ID_Deposit}"
+                            Height="36"
+                            Background="{Binding CloseButtonColor}"
+                            Foreground="{Binding CloseButtonTextColor}"
+                            IsHitTestVisible="{Binding CanSendCloseRequest}"
+                            Visibility="{Binding CanClose, Converter={StaticResource BoolToVisibility}}"
+                            Click="CloseDeposit_Click"/>
+                </Grid>
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="SimpleCardTemplate">
+            <Border Background="White" CornerRadius="6" Padding="20" Margin="0,0,0,15">
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="{Binding Title}" FontWeight="Bold" FontSize="16" Foreground="#21312D" TextWrapping="Wrap"/>
+                    <TextBlock Text="{Binding Description}" Margin="0,10,0,0" TextWrapping="Wrap" Foreground="#46544F" LineHeight="20"/>
+                </StackPanel>
+            </Border>
+        </DataTemplate>
+    </Page.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel>
+            <TextBlock Text="Кабинет клиента"
+                       FontSize="28"
+                       FontWeight="Bold"
+                       Foreground="#21312D"/>
+            <TextBlock Text="Здесь доступны данные клиента, счета, вклады, заявки и выписка по счету."
+                       Margin="0,10,0,20"
+                       Foreground="#56645F"/>
+        </StackPanel>
+
+        <TabControl Grid.Row="1">
+            <TabItem Header="Данные">
+                <Border Background="White" CornerRadius="6" Padding="20" Margin="0,15,0,0">
+                    <TextBlock x:Name="TBPersonalData"
+                               FontSize="15"
+                               Foreground="#3B4B45"
+                               TextWrapping="Wrap"/>
+                </Border>
+            </TabItem>
+
+            <TabItem Header="Счета">
+                <Grid Margin="0,15,0,0">
+                    <ListBox x:Name="LBAccounts" BorderThickness="0" Background="Transparent" HorizontalContentAlignment="Stretch" ItemTemplate="{StaticResource AccountTemplate}"/>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Вклады">
+                <Grid Margin="0,15,0,0">
+                    <ListBox x:Name="LBDeposits" BorderThickness="0" Background="Transparent" HorizontalContentAlignment="Stretch" ItemTemplate="{StaticResource DepositTemplate}"/>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Заявки">
+                <Grid Margin="0,15,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Border Background="#E5ECE9" CornerRadius="6" Padding="15">
+                        <StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="230"/>
+                                    <ColumnDefinition Width="12"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="12"/>
+                                    <ColumnDefinition Width="150"/>
+                                </Grid.ColumnDefinitions>
+                                <ComboBox x:Name="CBRequestType" Height="38" SelectedIndex="0" SelectionChanged="RequestType_Changed">
+                                    <ComboBoxItem Tag="OPEN_ACCOUNT" Content="Открытие счета"/>
+                                    <ComboBoxItem Tag="OPEN_DEPOSIT" Content="Открытие вклада"/>
+                                    <ComboBoxItem Tag="CHANGE_PERSONAL_DATA" Content="Смена данных"/>
+                                </ComboBox>
+                                <TextBox x:Name="TBoxRequest" Grid.Column="2" Height="38"/>
+                                <Button Grid.Column="4" Content="Отправить" Background="#2F6D5A" Foreground="White" Click="CreateRequest_Click"/>
+                            </Grid>
+                            <Grid x:Name="GridChangeData" Margin="240,10,0,0" Visibility="Collapsed">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="12"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Grid.Row="0" Grid.Column="0">
+                                    <TextBlock Text="Фамилия"/>
+                                    <TextBox x:Name="TBoxChangeLastName" Height="34" Margin="0,5,0,10"/>
+                                </StackPanel>
+                                <StackPanel Grid.Row="0" Grid.Column="2">
+                                    <TextBlock Text="Имя"/>
+                                    <TextBox x:Name="TBoxChangeFirstName" Height="34" Margin="0,5,0,10"/>
+                                </StackPanel>
+                                <StackPanel Grid.Row="1" Grid.Column="0">
+                                    <TextBlock Text="Отчество"/>
+                                    <TextBox x:Name="TBoxChangeMiddleName" Height="34" Margin="0,5,0,10"/>
+                                </StackPanel>
+                                <StackPanel Grid.Row="1" Grid.Column="2">
+                                    <TextBlock Text="Телефон"/>
+                                    <TextBox x:Name="TBoxChangePhone" Height="34" Margin="0,5,0,10"/>
+                                </StackPanel>
+                                <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">
+                                    <TextBlock Text="Email"/>
+                                    <TextBox x:Name="TBoxChangeEmail" Height="34" Margin="0,5,0,10"/>
+                                </StackPanel>
+                            </Grid>
+                            <CheckBox x:Name="ChBDocument"
+                                      Content="Фото документа приложено"
+                                      Margin="240,10,0,0"
+                                      Visibility="Collapsed"/>
+                            <TextBlock x:Name="TBRequestHint"
+                                       Margin="240,10,0,0"
+                                       Foreground="#56645F"
+                                       TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Border>
+                    <ListBox x:Name="LBRequests" Grid.Row="1" Margin="0,20,0,0" BorderThickness="0" Background="Transparent" HorizontalContentAlignment="Stretch" ItemTemplate="{StaticResource SimpleCardTemplate}"/>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Выписка">
+                <Border Background="#E5ECE9" CornerRadius="6" Padding="15" Margin="0,15,0,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="12"/>
+                            <ColumnDefinition Width="190"/>
+                        </Grid.ColumnDefinitions>
+                        <ComboBox x:Name="CBStatementAccount" Height="38" DisplayMemberPath="DisplayText"/>
+                        <Button Grid.Column="2" Content="Сохранить PDF" Background="#DDE8E4" Click="CreateStatement_Click"/>
+                    </Grid>
+                </Border>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Page>

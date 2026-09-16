@@ -1,0 +1,69 @@
+<Page x:Class="BanID.Pages.RegisterPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Background="Transparent">
+    <Page.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="Padding" Value="10,0,10,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="PasswordBox">
+            <Setter Property="Padding" Value="10,0,10,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+    </Page.Resources>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel VerticalAlignment="Center" Margin="10">
+            <TextBlock Text="Регистрация"
+                       FontSize="30"
+                       FontWeight="Bold"
+                       Foreground="#21312D"/>
+            <TextBlock Text="Персональные данные будут записаны в БД в зашифрованном виде."
+                       Margin="0,10,0,20"
+                       Foreground="#56645F"
+                       TextWrapping="Wrap"/>
+
+            <TextBlock Text="Фамилия"/>
+            <TextBox x:Name="TBoxLastName" Height="38" Margin="0,5,0,10"/>
+
+            <TextBlock Text="Имя"/>
+            <TextBox x:Name="TBoxFirstName" Height="38" Margin="0,5,0,10"/>
+
+            <TextBlock Text="Отчество"/>
+            <TextBox x:Name="TBoxMiddleName" Height="38" Margin="0,5,0,10"/>
+
+            <TextBlock Text="Телефон"/>
+            <TextBox x:Name="TBoxPhone" Height="38" Margin="0,5,0,10"/>
+
+            <TextBlock Text="Email"/>
+            <TextBox x:Name="TBoxEmail" Height="38" Margin="0,5,0,10"/>
+
+            <TextBlock Text="Пароль"/>
+            <PasswordBox x:Name="PBPassword" Height="38" Margin="0,5,0,5"/>
+            <TextBlock Text="Минимум 8 символов, большая и маленькая буква, цифра, один символ + - = , * / ."
+                       Foreground="#66736E"
+                       FontSize="12"
+                       TextWrapping="Wrap"
+                       Margin="0,0,0,10"/>
+
+            <TextBlock x:Name="TBError"
+                       Foreground="#B3261E"
+                       TextWrapping="Wrap"
+                       MinHeight="24"/>
+
+            <Button Content="Создать аккаунт"
+                    Height="42"
+                    Margin="0,10,0,10"
+                    Background="#2F6D5A"
+                    Foreground="White"
+                    FontWeight="Bold"
+                    Click="Register_Click"/>
+
+            <Button Content="Назад ко входу"
+                    Height="38"
+                    Background="#DDE8E4"
+                    Foreground="#21312D"
+                    Click="Back_Click"/>
+        </StackPanel>
+    </ScrollViewer>
+</Page>
