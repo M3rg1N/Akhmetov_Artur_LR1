@@ -6,3 +6,7 @@
 *.suo
 *.userosscache
 *.sln.docstates
+
+*.tmp
+*.log
+*.cache
